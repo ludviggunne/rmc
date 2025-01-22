@@ -1,8 +1,8 @@
 #include <termios.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "term.h"
-#include "xatexit.h"
 
 static struct termios s_new, s_old;
 
@@ -22,5 +22,5 @@ void disable_echoing(void)
   s_new.c_lflag &= ~ECHOCTL;
   if (tcsetattr(STDOUT_FILENO, TCSANOW, &s_new) < 0)
     return;
-  xatexit(cleanup);
+  atexit(cleanup);
 }

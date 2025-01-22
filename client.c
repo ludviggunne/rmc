@@ -10,7 +10,6 @@
 #include "escape.h"
 #include "get_runtime_dir.h"
 #include "message.h"
-#include "xatexit.h"
 
 extern char **environ;
 
@@ -28,8 +27,7 @@ static void cleanup(void)
 
 void run_client(void)
 {
-  xatexit_enable();
-  xatexit(cleanup);
+  atexit(cleanup);
 
   char cwd_buf[PATH_MAX] = { 0 };
   if (getcwd(cwd_buf, sizeof(cwd_buf)) == NULL) {

@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include "signals.h"
-#include "xatexit.h"
 
 static int s_fd = -1;
 
@@ -36,7 +35,7 @@ int get_signalfd(void)
       perror("signalfd");
       exit(EXIT_FAILURE);
     }
-    xatexit(cleanup);
+    atexit(cleanup);
   }
   return s_fd;
 }

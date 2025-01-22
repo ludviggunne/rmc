@@ -1,9 +1,9 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "signals.h"
 #include "spawn.h"
-#include "xatexit.h"
 
 static char s_default_shell[] = "/bin/sh";
 static char *s_shell = NULL;
@@ -38,12 +38,14 @@ pid_t spawn(struct message *msg)
   }
 
   if (pid == 0) {
-    xatexit_disable();
+    /* We use _Exit in child process as
+     * to not trigger any exit handlers. */
+
     unblock_signals();
 
     if (chdir(msg->cwd) < 0) {
       perror("chdir");
-      exit(EXIT_FAILURE);
+      _Exit(EXIT_FAILURE);
     }
 
     /* Check for SHELL in client environment,
@@ -56,7 +58,7 @@ pid_t spawn(struct message *msg)
     char *argv[] = { shell, "-c", msg->cmd, NULL };
     if (execve(argv[0], argv, msg->env) < 0) {
       perror("execve");
-      exit(EXIT_FAILURE);
+      _Exit(EXIT_FAILURE);
     }
   }
 

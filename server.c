@@ -16,7 +16,6 @@
 #include "server.h"
 #include "signals.h"
 #include "spawn.h"
-#include "xatexit.h"
 #include "term.h"
 #include "queue.h"
 #include "opts.h"
@@ -54,12 +53,7 @@ void run_server(void)
   }
 
   create_pidfile();
-
-  /* Runtime files are created,
-   * we can enable exit handler */
-  xatexit_enable();
-  xatexit(cleanup);
-
+  atexit(cleanup);
   disable_echoing();
 
   int sigfd = get_signalfd();
