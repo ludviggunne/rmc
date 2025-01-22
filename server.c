@@ -190,8 +190,8 @@ static void print_status(int status)
       printf("\x1b[31m");
     printf("Exit status: %d\x1b[0m\n", status);
   } else if (WIFSIGNALED(status)) {
-    status = WTERMSIG(status);
-    printf("\n\x1b[33mSignaled: %d\x1b[0m\n", status);
+    const char *sigstr = strsignal(WTERMSIG(status));
+    printf("\n\x1b[33m%s\x1b[0m\n", sigstr);
   }
 }
 
