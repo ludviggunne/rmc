@@ -1,0 +1,40 @@
+.TH rmc 1 "22 Jan 2025" "version 1.0"
+
+.SH NAME
+rmc - a remote command runner
+
+.SH SYNOPSIS
+rmc [\fBOPTIONS\fR...] [\fBCOMMAND\fR]
+
+.SH DESCRIPTION
+rmc is a "remote command runner". You can start the rmc server in one terminal
+with \fBrmc [-c|-r|-v|-q]\fR, and send commands to it with \fBrmc COMMAND\fR. The server
+will run the command in the same environment and working directory as the client
+that sent it. The server may be controlled further with the options \fB--cancel\fR
+and \fB--kill\fR.
+
+.SH OPTIONS
+.TP
+.B -v,\ --verbose
+Print working directory and command string before each run.
+.TP
+.B -c,\ --clear
+Clear the terminal in between each run.
+.TP
+.B -h,\ --help
+Show this help message.
+.TP
+.B -r,\ --reset
+Interrupt the running command if a new one is received.
+.TP
+.B -q,\ --quiet
+Don't print exit status. Cancels out \fB--verbose\fR.
+.TP
+.B -p,\ --pid
+Get process ID of server.
+.TP
+.B -C,\ --cancel
+Cancel running command remotely (shorthand for \fBkill -SIGUSR1 $(rmc --pid)\fR).
+.TP
+.B -k,\ --kill
+Kill the server (shorthand for \fBkill -SIGTERM $(rmc --pid)\fR).
