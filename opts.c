@@ -13,6 +13,7 @@ int g_reset = 0;
 int g_verbose = 0;
 int g_quiet = 0;
 int g_getpid = 0;
+int g_kill = 0;
 char **g_command = NULL;
 
 void parse_args(char **argv)
@@ -54,6 +55,10 @@ void parse_args(char **argv)
         g_getpid = 1;
         continue;
       }
+      if (strcmp(*argv, "--kill") == 0) {
+        g_kill = 1;
+        continue;
+      }
       usage(stderr);
       if (strlen(*argv) == 2)
         fprintf(stderr, "error: empty option\n");
@@ -90,6 +95,9 @@ void parse_args(char **argv)
           continue;
         case 'p':
           g_getpid = 1;
+          continue;
+        case 'k':
+          g_kill = 1;
           continue;
         default:
           usage(stderr);

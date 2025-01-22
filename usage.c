@@ -18,6 +18,7 @@ void long_usage(FILE *f)
           "    -h, --help      Show this help message.\n"
           "    -r, --reset     Interrupt the running command if a new one is received.\n"
           "    -q, --quiet     Don't print exit status. Cancels out --verbose.\n"
-          "    -C, --cancel    Cancel running command remotely.\n"
-          "    -p, --pid       Get process ID of server.\n");
+          "    -p, --pid       Get process ID of server.\n"
+          "    -C, --cancel    Cancel running command remotely (shorthand for 'kill -SIGUSR1 $(rmc --pid)').\n"
+          "    -k, --kill      Kill the server (shorthand for 'kill -SIGTERM $(rmc --pid)').\n");
 }

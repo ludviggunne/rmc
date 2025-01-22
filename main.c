@@ -32,6 +32,13 @@ int main(int argc, char **argv)
     }
   }
 
+  if (g_kill) {
+    int pid = read_pidfile();
+    if (pid > 0)
+      kill(pid, SIGTERM);
+    exit(0);
+  }
+
   if (g_cancel) {
     int pid = read_pidfile();
     if (pid > 0) {

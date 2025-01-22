@@ -12,6 +12,7 @@ extern int g_reset;
 extern int g_verbose;
 extern int g_quiet;
 extern int g_getpid;
+extern int g_kill;
 extern char **g_command;
 
 void parse_args(char **argv);
