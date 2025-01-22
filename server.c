@@ -152,7 +152,16 @@ static void handle_signal(void)
   }
   switch (info.ssi_signo) {
   case SIGTERM:
-    exit(0);
+    {
+      if (s_pid != NO_PID) {
+        /* Wait synchronously */
+        unblock_signals();
+        kill(s_pid, SIGTERM);
+        int status;
+        wait(&status);
+      }
+      exit(0);
+    }
   case SIGINT:
     {
       /* Exit if there is no command

@@ -42,8 +42,6 @@ int get_signalfd(void)
 
 void unblock_signals(void)
 {
-  /* Called in child process,
-   * to undo blocking in server */
   sigset_t mask;
   sigemptyset(&mask);
   sigaddset(&mask, SIGINT);
