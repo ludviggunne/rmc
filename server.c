@@ -158,6 +158,7 @@ static void handle_signal(void)
   }
   switch (info.ssi_signo) {
   case SIGTERM:
+    exit(0);
   case SIGINT:
     {
       /* Exit if there is no command
@@ -166,7 +167,7 @@ static void handle_signal(void)
       if (s_pid == NO_PID)
         exit(0);
       else
-        kill(s_pid, info.ssi_signo);
+        kill(s_pid, SIGINT);
       break;
     }
   case SIGCHLD:
