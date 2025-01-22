@@ -21,6 +21,7 @@ int read_pidfile(void)
   f = fopen(path, "r");
   if (f == NULL) {
     if (errno == ENOENT)
+      /* No server running */
       return -1;
     perror("fopen");
     exit(EXIT_FAILURE);
@@ -28,6 +29,7 @@ int read_pidfile(void)
   int pid;
   errno = 0;
   if (fscanf(f, "%d", &pid) != 1) {
+    /* TODO: silent failure? */
     if (errno)
       perror("fscanf");
     else

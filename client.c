@@ -54,6 +54,7 @@ void run_client(void)
 
   if (connect(sock, (const struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
     if (errno == ENOENT)
+      /* Socket doesn't exist */
       fprintf(stderr, "error: no server running\n");
     else
       perror(sockaddr.sun_path);

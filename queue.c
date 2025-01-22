@@ -13,6 +13,8 @@ static struct queue *s_back = NULL;
 
 void enqueue_message(struct message *msg)
 {
+  /* We make a shallow copy of the message,
+   * so the original message should not be freed! */
   struct message *copy = malloc(sizeof(struct message));
   memcpy(copy, msg, sizeof(struct message));
 

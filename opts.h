@@ -6,7 +6,6 @@
 extern const char *g_name;
 extern int g_cancel;
 extern int g_clear;
-// extern int g_force;
 extern int g_help;
 extern int g_reset;
 extern int g_verbose;

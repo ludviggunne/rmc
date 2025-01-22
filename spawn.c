@@ -47,7 +47,7 @@ pid_t spawn(struct message *msg)
     }
 
     /* Check for SHELL in client environment,
-     * otherwise use server environment,
+     * otherwise check server environment,
      * otherwise use default /bin/sh */
     char *shell = get_shell_from_env(msg->env);
     if (shell == NULL)

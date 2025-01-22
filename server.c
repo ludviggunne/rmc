@@ -49,16 +49,19 @@ void run_server(void)
   s_sockaddr.sun_family = AF_UNIX;
 
   if (access(s_sockaddr.sun_path, F_OK) == 0) {
-    fprintf(stderr, "error: an instance of rmc is already running\n");
+    fprintf(stderr, "error: server is already running\n");
     exit(EXIT_FAILURE);
   }
 
   create_pidfile();
 
+  /* Runtime files are created,
+   * we can enable exit handler */
   xatexit_enable();
   xatexit(cleanup);
 
   disable_echoing();
+
   int sigfd = get_signalfd();
 
   s_sock = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -105,9 +108,12 @@ void run_server(void)
       handle_signal();
     }
 
+    /* Are there queued messages? */
     struct message *msg = peek_message();
     if (msg) {
       if (s_pid == NO_PID) {
+        /* No command running, run command
+         * at beginning of queue. */
         if (g_clear)
           clear();
         if (g_verbose) {
@@ -116,6 +122,9 @@ void run_server(void)
         s_pid = spawn(msg);
         pop_message();
       } else if (g_reset) {
+        /* Interrupt running command,
+         * and cancel all but the latest
+         * received command. */
         pop_all_but_one_message();
         kill(s_pid, SIGINT);
       }
@@ -151,6 +160,9 @@ static void handle_signal(void)
   case SIGTERM:
   case SIGINT:
     {
+      /* Exit if there is no command
+       * running, otherwise cancel
+       * the command. */
       if (s_pid == NO_PID)
         exit(0);
       else
@@ -159,6 +171,7 @@ static void handle_signal(void)
     }
   case SIGCHLD:
     {
+      /* Command finished */
       int status;
       if (wait(&status) < 0) {
         perror("wait");
@@ -172,6 +185,7 @@ static void handle_signal(void)
   case SIGUSR1:
     {
       if (s_pid != NO_PID)
+        /* Cancel running command */
         kill(s_pid, SIGTERM);
       break;
     }

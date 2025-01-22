@@ -2,19 +2,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/signalfd.h>
+#include <unistd.h>
+
+#include "signals.h"
+#include "xatexit.h"
 
 static int s_fd = -1;
+
+static void cleanup(void)
+{
+  if (s_fd != -1)
+    close(s_fd);
+}
 
 int get_signalfd(void)
 {
   sigset_t mask;
 
   if (s_fd < 0) {
-    (void)sigemptyset(&mask);
-    (void)sigaddset(&mask, SIGINT);
-    (void)sigaddset(&mask, SIGTERM);
-    (void)sigaddset(&mask, SIGCHLD);
-    (void)sigaddset(&mask, SIGUSR1);
+    sigemptyset(&mask);
+    /* These are the signals we
+     * want to read with signalfd */
+    sigaddset(&mask, SIGINT);
+    sigaddset(&mask, SIGTERM);
+    sigaddset(&mask, SIGCHLD);
+    sigaddset(&mask, SIGUSR1);
     if (sigprocmask(SIG_BLOCK, &mask, NULL) < 0) {
       perror("sigprocmask");
       exit(EXIT_FAILURE);
@@ -24,18 +36,21 @@ int get_signalfd(void)
       perror("signalfd");
       exit(EXIT_FAILURE);
     }
+    xatexit(cleanup);
   }
   return s_fd;
 }
 
 void unblock_signals(void)
 {
+  /* Called in child process,
+   * to undo blocking in server */
   sigset_t mask;
-  (void)sigemptyset(&mask);
-  (void)sigaddset(&mask, SIGINT);
-  (void)sigaddset(&mask, SIGTERM);
-  (void)sigaddset(&mask, SIGCHLD);
-  (void)sigaddset(&mask, SIGUSR1);
+  sigemptyset(&mask);
+  sigaddset(&mask, SIGINT);
+  sigaddset(&mask, SIGTERM);
+  sigaddset(&mask, SIGCHLD);
+  sigaddset(&mask, SIGUSR1);
   if (sigprocmask(SIG_UNBLOCK, &mask, NULL) < 0) {
     perror("sigprocmask");
     exit(EXIT_FAILURE);

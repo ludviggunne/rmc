@@ -7,7 +7,6 @@
 const char *g_name = NULL;
 int g_cancel = 0;
 int g_clear = 0;
-// int g_force = 0;
 int g_help = 0;
 int g_reset = 0;
 int g_verbose = 0;
@@ -31,10 +30,6 @@ void parse_args(char **argv)
         g_clear = 1;
         continue;
       }
-      // if (strcmp(*argv, "--force") == 0) {
-      //   g_force = 1;
-      //   continue;
-      // }
       if (strcmp(*argv, "--help") == 0) {
         g_help = 2;
         continue;
@@ -78,9 +73,6 @@ void parse_args(char **argv)
         case 'c':
           g_clear = 1;
           continue;
-          // case 'f':
-          //   g_force = 1;
-          //   continue;
         case 'h':
           g_help = g_help ? g_help : 1;
           continue;

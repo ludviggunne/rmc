@@ -42,6 +42,8 @@ int main(int argc, char **argv)
   if (g_cancel) {
     int pid = read_pidfile();
     if (pid > 0) {
+      /* The server will cancel the running command
+       * on SIGUSR1. */
       kill(pid, SIGUSR1);
       exit(0);
     } else {

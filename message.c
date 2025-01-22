@@ -4,6 +4,20 @@
 
 #include "message.h"
 
+/* Protocol for command messages:
+ *        1. length of working directory string,
+ *           including null character.
+ *        2. length of command string, including
+ *           null character.
+ *        3. number of environment variables `nenv`.
+ *        4. the working directory string.
+ *        5. the command string.
+ *        6. `nenv` number of entries of the form
+ *           6.1. length of key-value pair, including
+ *                null character.
+ *           6.2  key-value pair (i.e. 'VAR=DEF').
+ */
+
 struct spec {
   size_t cwdlen;
   size_t cmdlen;

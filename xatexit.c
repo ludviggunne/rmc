@@ -26,9 +26,13 @@ static void run_handlers(void)
 
 void xatexit(void (*fn)(void))
 {
+  /* We manually register exit handlers so
+   * that we can disable them in child
+   * processes. */
   struct handler *handler = NULL;
   if (!s_is_reg)
     atexit(run_handlers);
+  s_is_reg = 1;
   handler = malloc(sizeof(*handler));
   handler->fn = fn;
   handler->next = s_handlers;
