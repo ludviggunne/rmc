@@ -5,8 +5,8 @@
 
 static void usage(FILE *f)
 {
-  assert(g_name);
-  fprintf(f, "Usage: %s [OPTIONS...] [COMMAND]\n", g_name);
+  assert(g_rmc);
+  fprintf(f, "Usage: %s [OPTIONS...] [COMMAND]\n", g_rmc);
 }
 
 void short_usage(FILE *f)

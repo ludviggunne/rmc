@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+extern const char *g_rmc;
 extern const char *g_name;
 extern int g_cancel;
 extern int g_clear;

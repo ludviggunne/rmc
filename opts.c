@@ -5,7 +5,8 @@
 #include "opts.h"
 #include "usage.h"
 
-const char *g_name = NULL;
+const char *g_rmc = NULL;
+const char *g_name = "default";
 int g_cancel = 0;
 int g_clear = 0;
 int g_help = 0;
@@ -18,7 +19,7 @@ char **g_command = NULL;
 
 void parse_args(char **argv)
 {
-  g_name = *argv;
+  g_rmc = *argv;
   ++argv;
 
   for (; *argv; ++argv) {
@@ -54,6 +55,18 @@ void parse_args(char **argv)
       if (strcmp(*argv, "--kill") == 0) {
         g_kill = 1;
         continue;
+      }
+      if (strncmp(*argv, "--name", strlen("--name")) == 0) {
+        const char *arg = *argv + strlen("--name");
+        if (strlen(arg) == 0) {
+          fprintf(stderr, "error: option --name requires an argument\n");
+          exit(EXIT_FAILURE);
+        }
+        if (arg[0] == '=') {
+          ++arg;
+          g_name = arg;
+          continue;
+        }
       }
       short_usage(stderr);
       if (strlen(*argv) == 2)
@@ -92,17 +105,37 @@ void parse_args(char **argv)
         case 'k':
           g_kill = 1;
           continue;
+        case 'n':
+          {
+            ++arg;
+            g_name = arg;
+            if (strlen(arg) == 0) {
+              ++argv;
+              g_name = *argv;
+              if (g_name == NULL) {
+                fprintf(stderr, "error: option -n requires an argument\n");
+                exit(EXIT_FAILURE);
+              }
+            }
+            break;
+          }
         default:
           short_usage(stderr);
           fprintf(stderr, "invalid option '%c'\n", *arg);
           exit(EXIT_FAILURE);
         }
+        break;
       }
       continue;
     }
 
     g_command = argv;
     break;
+  }
+
+  if (strlen(g_name) == 0) {
+    fprintf(stderr, "error: empty server name\n");
+    exit(EXIT_FAILURE);
   }
 
   if (g_quiet)
