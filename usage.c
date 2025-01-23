@@ -19,13 +19,14 @@ void long_usage(FILE *f)
 {
   usage(f);
   fprintf(f, "Options:\n"
-          "    -v, --verbose   Print working directory and command string before each run.\n"
-          "    -c, --clear     Clear the terminal in between each run.\n"
-          "    -h, --help      Show this help message.\n"
-          "    -r, --reset     Interrupt the running command if a new one is received.\n"
-          "    -q, --quiet     Don't print exit status. Cancels out --verbose.\n"
-          "    -p, --pid       Get process ID of server.\n"
-          "    -C, --cancel    Cancel running command remotely (shorthand for 'kill -SIGUSR1 $(rmc --pid)').\n"
-          "    -k, --kill      Kill the server (shorthand for 'kill -SIGTERM $(rmc --pid)').\n");
+          "    -v, --verbose     Print working directory and command string before each run.\n"
+          "    -c, --clear       Clear the terminal in between each run.\n"
+          "    -h, --help        Show this help message.\n"
+          "    -r, --reset       Interrupt the running command if a new one is received.\n"
+          "    -q, --quiet       Don't print exit status. Cancels out --verbose.\n"
+          "    -p, --pid         Get process ID of server.\n"
+          "    -C, --cancel      Cancel running command remotely (shorthand for 'kill -SIGUSR1 $(rmc --pid)').\n"
+          "    -k, --kill        Kill the server (shorthand for 'kill -SIGTERM $(rmc --pid)').\n"
+          "    -n, --name=<name> Send command to/start server with name <name>. The default name is 'default'.\n");
   fprintf(f, "Try 'man rmc' for more information.\n");
 }
