@@ -15,7 +15,7 @@ const char *get_runtime_dir(void)
     const char *xdg_runtime_dir = getenv("XDG_RUNTIME_DIR");
     if (xdg_runtime_dir == NULL) {
       /* TODO: fallback? */
-      fprintf(stderr, "error: XDG_RUNTIME_DIR is not defined");
+      fprintf(stderr, "error: XDG_RUNTIME_DIR is not defined\n");
       exit(EXIT_FAILURE);
     }
     snprintf(s_runtime_dir, sizeof(s_runtime_dir), "%s/rmc", xdg_runtime_dir);
