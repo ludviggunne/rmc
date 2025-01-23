@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "queue.h"
 
@@ -11,14 +13,23 @@ struct queue {
 static struct queue *s_front = NULL;
 static struct queue *s_back = NULL;
 
-void enqueue_message(struct message *msg)
+void enqueue_message(const struct message *msg)
 {
   /* We make a shallow copy of the message,
    * so the original message should not be freed! */
   struct message *copy = malloc(sizeof(struct message));
+  if (copy == NULL) {
+    perror("malloc");
+    exit(EXIT_FAILURE);
+  }
   memcpy(copy, msg, sizeof(struct message));
 
   struct queue *q = calloc(1, sizeof(struct queue));
+  if (q == NULL) {
+    perror("calloc");
+    free(copy);
+    exit(EXIT_FAILURE);
+  }
   q->msg = copy;
 
   if (s_back) {

@@ -10,7 +10,7 @@ struct buffer {
   size_t cap;
 };
 
-void buf_putc(struct buffer *buf, char c)
+static void buf_putc(struct buffer *buf, char c)
 {
   if (buf->ptr == NULL) {
     buf->cap = 32;

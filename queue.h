@@ -3,7 +3,7 @@
 
 #include "message.h"
 
-void enqueue_message(struct message *msg);
+void enqueue_message(const struct message *msg);
 struct message *peek_message(void);
 void pop_message(void);
 void pop_all_but_one_message(void);

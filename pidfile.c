@@ -7,7 +7,7 @@
 #include "pidfile.h"
 #include "get_runtime_dir.h"
 
-void get_pidfile_path(char *path, size_t len)
+static void get_pidfile_path(char *path, size_t len)
 {
   const char *dir = get_runtime_dir();
   snprintf(path, len, "%s/pid", dir);
@@ -34,8 +34,10 @@ int read_pidfile(void)
       perror("fscanf");
     else
       fprintf(stderr, "error: invalid PID file\n");
+    fclose(f);
     exit(EXIT_FAILURE);
   }
+  fclose(f);
   return pid;
 }
 

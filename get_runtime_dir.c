@@ -12,7 +12,7 @@ static char s_runtime_dir[PATH_MAX] = { 0 };
 const char *get_runtime_dir(void)
 {
   if (s_runtime_dir[0] == 0) {
-    char *xdg_runtime_dir = getenv("XDG_RUNTIME_DIR");
+    const char *xdg_runtime_dir = getenv("XDG_RUNTIME_DIR");
     if (xdg_runtime_dir == NULL) {
       /* TODO: fallback? */
       fprintf(stderr, "error: XDG_RUNTIME_DIR is not defined");

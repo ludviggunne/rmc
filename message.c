@@ -5,7 +5,7 @@
 
 #include "message.h"
 
-int msg_getline(char **lineptr, FILE *f)
+static int msg_getline(char **lineptr, FILE *f)
 {
   size_t len;
   /* We won't be reusing any memory */
@@ -45,7 +45,7 @@ int read_message(int fd, struct message *msg)
     return -1;
   }
 
-  if (sscanf(nenv_buf, "%lu", &nenv) != 1) {
+  if (sscanf(nenv_buf, "%zu", &nenv) != 1) {
     free(nenv_buf);
     free_message(msg);
     return -1;
@@ -81,7 +81,7 @@ int write_message(int fd, struct message *msg)
   if (fprintf(f, "%s\n", msg->cmd) < 0)
     return -1;
 
-  if (fprintf(f, "%lu\n", nenv) < 0)
+  if (fprintf(f, "%zu\n", nenv) < 0)
     return -1;
 
   for (char **envptr = msg->env; *envptr; ++envptr) {
