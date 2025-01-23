@@ -6,6 +6,7 @@
 #include "server.h"
 #include "client.h"
 #include "pidfile.h"
+#include "list_servers.h"
 
 int main(int argc, char **argv)
 {
@@ -28,6 +29,12 @@ int main(int argc, char **argv)
       exit(0);
     }
     exit(EXIT_FAILURE);
+  }
+
+  if (g_list) {
+    if (list_servers() < 0)
+      exit(EXIT_FAILURE);
+    exit(0);
   }
 
   if (g_kill) {

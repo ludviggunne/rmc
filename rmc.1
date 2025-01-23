@@ -1,4 +1,4 @@
-.TH rmc 1 "23 Jan 2025" "version 1.0"
+.TH rmc 1 "24 Jan 2025" "version 1.0"
 
 .SH NAME
 rmc - a remote command runner
@@ -38,6 +38,9 @@ Cancel running command remotely (shorthand for \fBkill -SIGUSR1 $(rmc --pid)\fR)
 .TP
 .B -k,\ --kill
 Kill the server (shorthand for \fBkill -SIGTERM $(rmc --pid)\fR).
+.TP
+.B -l,\ --list
+List active servers.
 .TP
 .B -n,\ --name=\fINAME\fR
 Send command to/start server with name \fINAME\fR. The default name is 'default'.
