@@ -26,17 +26,18 @@ int main(int argc, char **argv)
     if (pid > 0) {
       printf("%d\n", pid);
       exit(0);
-    } else {
-      fprintf(stderr, "error: no server running\n");
-      exit(EXIT_FAILURE);
     }
+    exit(EXIT_FAILURE);
   }
 
   if (g_kill) {
     int pid = read_pidfile();
-    if (pid > 0)
+    if (pid > 0) {
       kill(pid, SIGTERM);
-    exit(0);
+      exit(0);
+    }
+    fprintf(stderr, "error: no server '%s' running\n", g_name);
+    exit(EXIT_FAILURE);
   }
 
   if (g_cancel) {
@@ -46,10 +47,9 @@ int main(int argc, char **argv)
        * on SIGUSR1. */
       kill(pid, SIGUSR1);
       exit(0);
-    } else {
-      fprintf(stderr, "error: no server '%s' running\n", g_name);
-      exit(EXIT_FAILURE);
     }
+    fprintf(stderr, "error: no server '%s' running\n", g_name);
+    exit(EXIT_FAILURE);
   }
 
   if (g_command)
