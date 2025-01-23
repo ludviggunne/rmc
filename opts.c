@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "opts.h"
+#include "usage.h"
 
 const char *g_name = NULL;
 int g_cancel = 0;
@@ -54,7 +55,7 @@ void parse_args(char **argv)
         g_kill = 1;
         continue;
       }
-      usage(stderr);
+      short_usage(stderr);
       if (strlen(*argv) == 2)
         fprintf(stderr, "error: empty option\n");
       else
@@ -92,7 +93,7 @@ void parse_args(char **argv)
           g_kill = 1;
           continue;
         default:
-          usage(stderr);
+          short_usage(stderr);
           fprintf(stderr, "invalid option '%c'\n", *arg);
           exit(EXIT_FAILURE);
         }

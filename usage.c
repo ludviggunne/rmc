@@ -3,10 +3,16 @@
 
 #include <assert.h>
 
-void usage(FILE *f)
+static void usage(FILE *f)
 {
   assert(g_name);
   fprintf(f, "Usage: %s [OPTIONS...] [COMMAND]\n", g_name);
+}
+
+void short_usage(FILE *f)
+{
+  usage(f);
+  fprintf(f, "Try 'rmc --help' for more information.\n");
 }
 
 void long_usage(FILE *f)
@@ -21,4 +27,5 @@ void long_usage(FILE *f)
           "    -p, --pid       Get process ID of server.\n"
           "    -C, --cancel    Cancel running command remotely (shorthand for 'kill -SIGUSR1 $(rmc --pid)').\n"
           "    -k, --kill      Kill the server (shorthand for 'kill -SIGTERM $(rmc --pid)').\n");
+  fprintf(f, "Try 'man rmc' for more information.\n");
 }

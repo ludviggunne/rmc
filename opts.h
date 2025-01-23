@@ -15,6 +15,5 @@ extern int g_kill;
 extern char **g_command;
 
 void parse_args(char **argv);
-void usage(FILE * f);
 
 #endif

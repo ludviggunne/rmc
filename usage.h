@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-void usage(FILE * f);
+void short_usage(FILE * f);
 void long_usage(FILE * f);
 
 #endif

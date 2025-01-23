@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     if (g_help > 1)
       long_usage(stdout);
     else
-      usage(stdout);
+      short_usage(stdout);
     exit(0);
   }
 
