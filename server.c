@@ -43,12 +43,12 @@ static void clear(void);
 
 void run_server(void)
 {
-  snprintf(s_sockaddr.sun_path, sizeof(s_sockaddr.sun_path) - 1, "%s/rmc.sock",
-           get_runtime_dir());
+  snprintf(s_sockaddr.sun_path, sizeof(s_sockaddr.sun_path) - 1, "%s/%s.sock",
+           get_runtime_dir(), g_name);
   s_sockaddr.sun_family = AF_UNIX;
 
   if (access(s_sockaddr.sun_path, F_OK) == 0) {
-    fprintf(stderr, "error: server is already running\n");
+    fprintf(stderr, "error: server '%s' is already running\n", g_name);
     exit(EXIT_FAILURE);
   }
 

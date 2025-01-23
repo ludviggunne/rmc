@@ -47,7 +47,7 @@ int main(int argc, char **argv)
       kill(pid, SIGUSR1);
       exit(0);
     } else {
-      fprintf(stderr, "error: no server running\n");
+      fprintf(stderr, "error: no server '%s' running\n", g_name);
       exit(EXIT_FAILURE);
     }
   }

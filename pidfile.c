@@ -6,11 +6,12 @@
 
 #include "pidfile.h"
 #include "get_runtime_dir.h"
+#include "opts.h"
 
 static void get_pidfile_path(char *path, size_t len)
 {
   const char *dir = get_runtime_dir();
-  snprintf(path, len, "%s/pid", dir);
+  snprintf(path, len, "%s/%s.pid", dir, g_name);
 }
 
 int read_pidfile(void)

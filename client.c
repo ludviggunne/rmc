@@ -40,8 +40,8 @@ void run_client(void)
   s_msg.cmd = escape(g_command);
 
   struct sockaddr_un sockaddr = { 0 };
-  snprintf(sockaddr.sun_path, sizeof(sockaddr.sun_path) - 1, "%s/rmc.sock",
-           get_runtime_dir());
+  snprintf(sockaddr.sun_path, sizeof(sockaddr.sun_path) - 1, "%s/%s.sock",
+           get_runtime_dir(), g_name);
   sockaddr.sun_family = AF_UNIX;
 
   int sock = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -53,7 +53,7 @@ void run_client(void)
   if (connect(sock, (const struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
     if (errno == ENOENT)
       /* Socket doesn't exist */
-      fprintf(stderr, "error: no server running\n");
+      fprintf(stderr, "error: no server '%s' running\n", g_name);
     else
       perror(sockaddr.sun_path);
     exit(EXIT_FAILURE);
