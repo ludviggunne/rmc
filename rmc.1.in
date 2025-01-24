@@ -43,4 +43,22 @@ Kill the server (shorthand for \fBkill -SIGTERM $(rmc --pid)\fR).
 List active servers.
 .TP
 .B -n,\ --name=\fINAME\fR
-Send command to/start server with name \fINAME\fR. The default name is 'default'.
+Select/start server with name \fINAME\fR. The default name is 'default'.
+
+.SH EXAMPLES
+.TP
+Start the default server.
+.B rmc
+.TP
+Send a command to the default server.
+.B rmc echo hello
+.TP
+Start a server with name 'myserver', and clear the terminal between each run.
+.B rmc -cn myserver
+.TP
+Kill server with name 'myserver'.
+.B rmc -kn myserver
+.TP
+Interrupt a command running on the default server remotely.
+.B rmc -C
+.TP
