@@ -11,7 +11,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include "get_runtime_dir.h"
+#include "runtime_path.h"
 #include "message.h"
 #include "server.h"
 #include "signals.h"
@@ -44,7 +44,7 @@ static void clear(void);
 void run_server(void)
 {
   snprintf(s_sockaddr.sun_path, sizeof(s_sockaddr.sun_path) - 1, "%s/%s.sock",
-           get_runtime_dir(), g_name);
+           runtime_path(), g_name);
   s_sockaddr.sun_family = AF_UNIX;
 
   if (access(s_sockaddr.sun_path, F_OK) == 0) {

@@ -8,7 +8,7 @@
 
 #include "client.h"
 #include "escape.h"
-#include "get_runtime_dir.h"
+#include "runtime_path.h"
 #include "message.h"
 
 extern char **environ;
@@ -41,7 +41,7 @@ void run_client(void)
 
   struct sockaddr_un sockaddr = { 0 };
   snprintf(sockaddr.sun_path, sizeof(sockaddr.sun_path) - 1, "%s/%s.sock",
-           get_runtime_dir(), g_name);
+           runtime_path(), g_name);
   sockaddr.sun_family = AF_UNIX;
 
   int sock = socket(AF_UNIX, SOCK_STREAM, 0);

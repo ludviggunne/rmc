@@ -6,11 +6,11 @@
 #include <string.h>
 
 #include "list_servers.h"
-#include "get_runtime_dir.h"
+#include "runtime_path.h"
 
 int list_servers(void)
 {
-  const char *path = get_runtime_dir();
+  const char *path = runtime_path();
   DIR *dir = opendir(path);
   if (dir == NULL) {
     if (errno != ENOENT)
