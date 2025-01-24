@@ -5,12 +5,12 @@
 #include <errno.h>
 
 #include "pidfile.h"
-#include "get_runtime_dir.h"
+#include "runtime_path.h"
 #include "opts.h"
 
 static void get_pidfile_path(char *path, size_t len)
 {
-  const char *dir = get_runtime_dir();
+  const char *dir = runtime_path();
   snprintf(path, len, "%s/%s.pid", dir, g_name);
 }
 
