@@ -29,6 +29,9 @@ void long_usage(FILE *f)
           "    -k, --kill        Kill the server (shorthand for 'kill -SIGTERM $(rmc --pid)').\n"
           "    -l, --list        List active servers.\n"
           "    -d, --daemon      Start in daemon mode.\n"
+#ifdef WITH_LIBNOTIFY
+          "    -N, --notify      Send desktop notifications when commands start/finish.\n"
+#endif
           "    -n, --name=<name> Send command to/start server with name <name>. The default name is 'default'.\n");
   fprintf(f, "Try 'man rmc' for more information.\n");
 }

@@ -17,6 +17,7 @@ int g_getpid = 0;
 int g_kill = 0;
 int g_list = 0;
 int g_daemon = 0;
+int g_notify = 0;
 char **g_command = NULL;
 
 void parse_args(char **argv)
@@ -65,6 +66,16 @@ void parse_args(char **argv)
       if (strcmp(*argv, "--daemon") == 0) {
         g_daemon = 1;
         continue;
+      }
+      if (strcmp(*argv, "--notify") == 0) {
+#ifdef WITH_LIBNOTIFY
+        g_notify = 1;
+        continue;
+#else
+        fprintf(stderr,
+                "error: rmc was not built with WITH_LIBNOTIFY=1, which is required for option --notify\n");
+        exit(EXIT_FAILURE);
+#endif
       }
       if (strncmp(*argv, "--name", strlen("--name")) == 0) {
         const char *arg = *argv + strlen("--name");
@@ -121,6 +132,15 @@ void parse_args(char **argv)
         case 'd':
           g_daemon = 1;
           continue;
+        case 'N':
+#ifdef WITH_LIBNOTIFY
+          g_notify = 1;
+          continue;
+#else
+          fprintf(stderr,
+                  "error: rmc was not built with WITH_LIBNOTIFY=1, which is required for option -N\n");
+          exit(EXIT_FAILURE);
+#endif
         case 'n':
           {
             ++arg;

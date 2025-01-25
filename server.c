@@ -20,6 +20,7 @@
 #include "queue.h"
 #include "opts.h"
 #include "pidfile.h"
+#include "notify.h"
 
 static struct sockaddr_un s_sockaddr = { 0 };
 
@@ -121,6 +122,10 @@ void run_server(void)
         if (g_verbose) {
           printf("%s\n%s\n", msg->cwd, msg->cmd);
         }
+#ifdef WITH_LIBNOTIFY
+        if (g_notify)
+          notify_start(msg);
+#endif
         s_pid = spawn(msg);
         pop_message();
       } else if (g_reset) {
@@ -192,6 +197,11 @@ static void handle_signal(void)
       s_pid = NO_PID;
       if (!g_quiet)
         print_status(status);
+#ifdef WITH_LIBNOTIFY
+      if (g_notify) {
+        notify_end(status);
+      }
+#endif
       break;
     }
   case SIGUSR1:
