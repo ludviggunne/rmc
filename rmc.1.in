@@ -8,7 +8,7 @@ rmc [\fBOPTIONS\fR...] [\fBCOMMAND\fR]
 
 .SH DESCRIPTION
 rmc is a "remote command runner". You can start the rmc server in one terminal
-with \fBrmc [-c|-r|-v|-q]\fR, and send commands to it with \fBrmc COMMAND\fR. The server
+with \fBrmc [-c|-r|-v|-q|-d]\fR, and send commands to it with \fBrmc COMMAND\fR. The server
 will run the command in the same environment and working directory as the client
 that sent it. The server may be controlled further with the options \fB--cancel\fR
 and \fB--kill\fR. Multiple servers can be running at once using the \fB--name\fR option.
@@ -41,6 +41,9 @@ Kill the server (shorthand for \fBkill -SIGTERM $(rmc --pid)\fR).
 .TP
 .B -l,\ --list
 List active servers.
+.TP
+.B -d,\ --daemon
+Start in daemon mode.
 .TP
 .B -n,\ --name=\fINAME\fR
 Select/start server with name \fINAME\fR. The default name is 'default'.

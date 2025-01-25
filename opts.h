@@ -14,6 +14,7 @@ extern int g_quiet;
 extern int g_getpid;
 extern int g_kill;
 extern int g_list;
+extern int g_daemon;
 extern char **g_command;
 
 void parse_args(char **argv);

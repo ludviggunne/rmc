@@ -51,9 +51,17 @@ void run_server(void)
     fprintf(stderr, "error: server '%s' is already running\n", g_name);
     exit(EXIT_FAILURE);
   }
+  atexit(cleanup);
+
+  if (g_daemon) {
+    if (daemon(0, 0) < 0) {
+      perror("daemon");
+      exit(EXIT_FAILURE);
+    }
+    /* TODO: logging? */
+  }
 
   create_pidfile();
-  atexit(cleanup);
   disable_echoing();
 
   int sigfd = get_signalfd();

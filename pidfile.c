@@ -61,5 +61,6 @@ int unlink_pidfile(void)
 {
   char path[PATH_MAX];
   get_pidfile_path(path, sizeof(path));
-  return unlink(path);
+  int ret = unlink(path);
+  return errno == ENOENT ? 0 : ret;
 }

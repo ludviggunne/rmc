@@ -16,6 +16,7 @@ int g_quiet = 0;
 int g_getpid = 0;
 int g_kill = 0;
 int g_list = 0;
+int g_daemon = 0;
 char **g_command = NULL;
 
 void parse_args(char **argv)
@@ -59,6 +60,10 @@ void parse_args(char **argv)
       }
       if (strcmp(*argv, "--list") == 0) {
         g_list = 1;
+        continue;
+      }
+      if (strcmp(*argv, "--daemon") == 0) {
+        g_daemon = 1;
         continue;
       }
       if (strncmp(*argv, "--name", strlen("--name")) == 0) {
@@ -112,6 +117,9 @@ void parse_args(char **argv)
           continue;
         case 'l':
           g_list = 1;
+          continue;
+        case 'd':
+          g_daemon = 1;
           continue;
         case 'n':
           {
