@@ -48,13 +48,13 @@ static void init(void)
   atexit(cleanup);
 }
 
-static void notify_send(void)
+static void notify_send(int timeout)
 {
   NotifyNotification *not;
   GError *error = NULL;
   init();
   not = notify_notification_new(s_appname, s_body, NULL);
-  notify_notification_set_timeout(not, 3000);
+  notify_notification_set_timeout(not, timeout);
   if (!notify_notification_show(not, &error)) {
     fprintf(stderr, "error: failed to send notification: %s\n", error->message);
   }
@@ -64,21 +64,22 @@ static void notify_send(void)
 void notify_start(struct message *msg)
 {
   sprintf_realloc(&s_body, "Running command %s", msg->cmd);
-
-  notify_send();
-
+  notify_send(NOTIFY_EXPIRES_DEFAULT);
   s_last_command = strdup(msg->cmd);
 }
 
 void notify_end(int status)
 {
+  int timeout = NOTIFY_EXPIRES_DEFAULT;
   if (WIFEXITED(status)) {
     status = WEXITSTATUS(status);
-    if (status == 0)
+    if (status == 0) {
       sprintf_realloc(&s_body, "Command finished: %s", s_last_command);
-    else
+    } else {
       sprintf_realloc(&s_body, "Command failed (exit code %d): %s", status,
                       s_last_command);
+      timeout = NOTIFY_EXPIRES_NEVER;
+    }
   } else if (WIFSIGNALED(status)) {
     status = WTERMSIG(status);
     char buf[64];
@@ -89,7 +90,7 @@ void notify_end(int status)
     sprintf_realloc(&s_body, "Command stopped/continued: %s", s_last_command);
   }
 
-  notify_send();
+  notify_send(timeout);
 
   free(s_last_command);
   s_last_command = NULL;
