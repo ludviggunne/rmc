@@ -142,13 +142,15 @@ void run_server(void)
 static void handle_connection(void)
 {
   struct message msg;
+  const char *error;
   int conn = accept(s_sock, NULL, NULL);
   if (conn < 0) {
     perror("accept");
     return;
   }
-  if (read_message(conn, &msg) < 0) {
-    fprintf(stderr, "error: unable to read message: %s\n", strerror(errno));
+  error = read_message(conn, &msg);
+  if (error) {
+    fprintf(stderr, "error: unable to read message: %s\n", error);
   } else {
     enqueue_message(&msg);
   }

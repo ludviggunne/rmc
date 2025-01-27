@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "message.h"
 
@@ -18,22 +19,22 @@ static int msg_getline(char **lineptr, FILE *f)
   return 0;
 }
 
-int read_message(int fd, struct message *msg)
+const char *read_message(int fd, struct message *msg)
 {
   FILE *f = fdopen(fd, "r");
   if (f == NULL)
-    return -1;
+    return strerror(errno);
 
   memset(msg, 0, sizeof(*msg));
 
   if (msg_getline(&msg->cwd, f) < 0) {
     free_message(msg);
-    return -1;
+    return strerror(errno);
   }
 
   if (msg_getline(&msg->cmd, f) < 0) {
     free_message(msg);
-    return -1;
+    return strerror(errno);
   }
 
   char *nenv_buf = NULL;
@@ -42,13 +43,16 @@ int read_message(int fd, struct message *msg)
   if (msg_getline(&nenv_buf, f) < 0) {
     free(nenv_buf);
     free_message(msg);
-    return -1;
+    return strerror(errno);
   }
 
-  if (sscanf(nenv_buf, "%zu", &nenv) != 1) {
+  int res = sscanf(nenv_buf, "%zu", &nenv);
+  if (res != 1) {
     free(nenv_buf);
     free_message(msg);
-    return -1;
+    if (res == EOF)
+      return "invalid nenv";
+    return strerror(errno);
   }
   free(nenv_buf);
 
@@ -56,7 +60,7 @@ int read_message(int fd, struct message *msg)
   for (size_t i = 0; i < nenv; ++i) {
     if (msg_getline(&msg->env[i], f) < 0) {
       free_message(msg);
-      return -1;
+      return strerror(errno);
     }
   }
 
@@ -65,28 +69,28 @@ int read_message(int fd, struct message *msg)
   return 0;
 }
 
-int write_message(int fd, struct message *msg)
+const char *write_message(int fd, struct message *msg)
 {
   FILE *f = fdopen(fd, "w");
   if (f == NULL)
-    return -1;
+    return strerror(errno);
 
   size_t nenv = 0;
   for (char **envptr = msg->env; *envptr; ++envptr)
     nenv++;
 
   if (fprintf(f, "%s\n", msg->cwd) < 0)
-    return -1;
+    return strerror(errno);
 
   if (fprintf(f, "%s\n", msg->cmd) < 0)
-    return -1;
+    return strerror(errno);
 
   if (fprintf(f, "%zu\n", nenv) < 0)
-    return -1;
+    return strerror(errno);
 
   for (char **envptr = msg->env; *envptr; ++envptr) {
     if (fprintf(f, "%s\n", *envptr) < 0)
-      return -1;
+      return strerror(errno);
   }
 
   fflush(f);

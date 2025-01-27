@@ -59,8 +59,9 @@ void run_client(void)
     exit(EXIT_FAILURE);
   }
 
-  if (write_message(sock, &s_msg) < 0) {
-    perror("error: unable to write message");
+  const char *error = write_message(sock, &s_msg);
+  if (error) {
+    fprintf(stderr, "error: unable to write message: %s", error);
     exit(EXIT_FAILURE);
   }
 

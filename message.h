@@ -10,8 +10,11 @@ struct message {
   char *cmd;                    /* Command to run */
 };
 
-int read_message(int fd, struct message *msg);
-int write_message(int fd, struct message *msg);
+/* These functions return error strings on failure,
+   or NULL on success. */
+const char *read_message(int fd, struct message *msg);
+const char *write_message(int fd, struct message *msg);
+
 void free_message(struct message *msg);
 
 #endif
