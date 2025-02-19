@@ -100,6 +100,10 @@ void parse_args(char **argv)
     if (*argv[0] == '-') {
       char *arg = *argv;
       ++arg;
+      if (*arg == 0) {
+        fprintf(stderr, "error: empty option\n");
+        exit(EXIT_FAILURE);
+      }
       for (; *arg; ++arg) {
         switch (*arg) {
         case 'C':
@@ -157,7 +161,7 @@ void parse_args(char **argv)
           }
         default:
           short_usage(stderr);
-          fprintf(stderr, "invalid option '%c'\n", *arg);
+          fprintf(stderr, "error: invalid option '%c'\n", *arg);
           exit(EXIT_FAILURE);
         }
         break;
