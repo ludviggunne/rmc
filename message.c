@@ -11,11 +11,9 @@ static int msg_getline(char **lineptr, FILE *f)
   size_t len;
   /* We won't be reusing any memory */
   *lineptr = NULL;
-  if (getline(lineptr, &len, f) < 0) {
+  if (getdelim(lineptr, &len, 0, f) < 0) {
     return -1;
   }
-  /* Get rid of newline */
-  (*lineptr)[strlen(*lineptr) - 1] = 0;
   return 0;
 }
 
@@ -79,18 +77,18 @@ const char *write_message(int fd, struct message *msg)
   for (char **envptr = msg->env; *envptr; ++envptr)
     nenv++;
 
-  if (fprintf(f, "%s\n", msg->cwd) < 0)
-    return strerror(errno);
+  if (fprintf(f, "%s%c", msg->cwd, 0) < 0)
+    return "IO error";
 
-  if (fprintf(f, "%s\n", msg->cmd) < 0)
-    return strerror(errno);
+  if (fprintf(f, "%s%c", msg->cmd, 0) < 0)
+    return "IO error";
 
-  if (fprintf(f, "%zu\n", nenv) < 0)
-    return strerror(errno);
+  if (fprintf(f, "%zu%c", nenv, 0) < 0)
+    return "IO error";
 
   for (char **envptr = msg->env; *envptr; ++envptr) {
-    if (fprintf(f, "%s\n", *envptr) < 0)
-      return strerror(errno);
+    if (fprintf(f, "%s%c", *envptr, 0) < 0)
+      return "IO error";
   }
 
   fflush(f);
