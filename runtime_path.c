@@ -14,11 +14,12 @@ const char *runtime_path(void)
   if (s_runtime_path[0] == 0) {
     const char *xdg_runtime_path = getenv("XDG_RUNTIME_DIR");
     if (xdg_runtime_path == NULL) {
-      /* TODO: fallback? */
-      fprintf(stderr, "error: XDG_RUNTIME_DIR is not defined\n");
-      exit(EXIT_FAILURE);
+      uid_t uid = getuid();
+      snprintf(s_runtime_path, sizeof(s_runtime_path), "/run/user/%d/rmc", uid);
+    } else {
+      snprintf(s_runtime_path, sizeof(s_runtime_path), "%s/rmc",
+               xdg_runtime_path);
     }
-    snprintf(s_runtime_path, sizeof(s_runtime_path), "%s/rmc", xdg_runtime_path);
     /* Make sure the directory exists */
     if (mkdir(s_runtime_path, 0777) < 0 && errno != EEXIST) {
       perror("mkdir");
