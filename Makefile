@@ -26,6 +26,7 @@ endif
 
 PREFIX?=.
 BINDIR=$(PREFIX)/bin
+BASHCOMPDIR=$(PREFIX)/share/bash-completion/completions
 MANDIR=$(PREFIX)/share/man/man1
 
 all: rmc rmc.1
@@ -50,5 +51,6 @@ clean:
 install:
 	install -Dm755 rmc $(BINDIR)/rmc
 	install -Dm644 rmc.1 $(MANDIR)/rmc.1
+	install -Dm755 completions/rmc-completions.bash $(BASHCOMPDIR)/rmc
 
 .PHONY: clean all install
