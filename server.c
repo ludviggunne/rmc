@@ -133,7 +133,7 @@ void run_server(void)
          * and cancel all but the latest
          * received command. */
         pop_all_but_one_message();
-        kill(s_pid, SIGINT);
+        kill(s_pid, SIGTERM);
       }
     }
   }
@@ -185,7 +185,7 @@ static void handle_signal(void)
       if (s_pid == NO_PID)
         exit(0);
       else
-        kill(s_pid, SIGINT);
+        kill(s_pid, SIGTERM);
       break;
     }
   case SIGCHLD:
