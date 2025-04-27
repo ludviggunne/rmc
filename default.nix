@@ -6,7 +6,8 @@ pkgs.stdenv.mkDerivation {
   name = "rmc";
   version = "1.0";
   src = ./.;
-  buildInputs = with pkgs; [ pkg-config libnotify ];
+  nativeBuildInputs = [ pkgs.pkg-config ];
+  buildInputs = [ pkgs.libnotify ];
   buildPhase = ''
     make WITH_LIBNOTIFY=1
   '';
