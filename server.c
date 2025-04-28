@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <signal.h>
 #include <assert.h>
-#include <errno.h>
 #include <string.h>
 
 #include "runtime_path.h"
