@@ -37,8 +37,8 @@ rmc: $(OBJS)
 debug: CFLAGS+=-g -O0 -Wno-cpp
 debug: rmc
 
-rmc.1: rmc.1.in
-	sed 's/DATE/$(shell LC_TIME=en_US date '+%d %b %Y')/g' $< > $@
+rmc.1: rmc.1.scd
+	scdoc < $(<) > $(@)
 
 -include $(DEPS)
 
